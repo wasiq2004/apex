@@ -7,15 +7,15 @@ const AnimatedLogoReveal: React.FC = () => {
 
     useEffect(() => {
         const sequence = async () => {
-            // Initial delay
-            await new Promise(resolve => setTimeout(resolve, 500));
+            // Minimal initial delay for smooth start
+            await new Promise(resolve => setTimeout(resolve, 300));
 
             // Start the reveal animation - fade in with subtle scale
             await controls.start({
                 scale: [0.95, 1],
                 opacity: [0, 1],
                 transition: {
-                    duration: 1.5,
+                    duration: 1.2,
                     ease: [0.43, 0.13, 0.23, 0.96]
                 }
             });
@@ -82,7 +82,7 @@ const AnimatedLogoReveal: React.FC = () => {
                         className="absolute inset-0 rounded-full"
                         initial={{ scale: 0 }}
                         animate={{ scale: isRevealed ? 0 : 20 }}
-                        transition={{ duration: 1, delay: 2 }}
+                        transition={{ duration: 0.8, delay: 0.8 }}
                         style={{
                             background: 'radial-gradient(circle, transparent 30%, #050505 70%)',
                             mixBlendMode: 'multiply'
@@ -98,7 +98,7 @@ const AnimatedLogoReveal: React.FC = () => {
                         animate={{
                             filter: isRevealed ? 'brightness(1)' : 'brightness(0)'
                         }}
-                        transition={{ duration: 1, delay: 2 }}
+                        transition={{ duration: 0.8, delay: 0.8 }}
                     />
 
                     {/* Light rays emanating from logo */}
@@ -119,8 +119,8 @@ const AnimatedLogoReveal: React.FC = () => {
                                         opacity: [0, 0.8, 0]
                                     }}
                                     transition={{
-                                        duration: 2,
-                                        delay: 2.5 + i * 0.1,
+                                        duration: 1.5,
+                                        delay: 1.0 + i * 0.08,
                                         ease: "easeOut"
                                     }}
                                 />
@@ -137,13 +137,13 @@ const AnimatedLogoReveal: React.FC = () => {
                         opacity: isRevealed ? 1 : 0,
                         y: isRevealed ? 0 : 30
                     }}
-                    transition={{ duration: 1, delay: 3 }}
+                    transition={{ duration: 0.8, delay: 1.2 }}
                 >
                     {/* Animated tagline */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 3.5 }}
+                        transition={{ duration: 0.6, delay: 1.5 }}
                     >
                         <motion.div
                             className="inline-block px-10 py-4 border border-[#D4AF37]/30 rounded-sm"
@@ -167,7 +167,7 @@ const AnimatedLogoReveal: React.FC = () => {
                         className="pt-8"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 1, delay: 4 }}
+                        transition={{ duration: 0.8, delay: 1.8 }}
                     >
                         <motion.div
                             className="flex flex-col items-center space-y-3"
@@ -216,8 +216,8 @@ const AnimatedLogoReveal: React.FC = () => {
                                 opacity: [1, 1, 0]
                             }}
                             transition={{
-                                duration: 2,
-                                delay: 2.5,
+                                duration: 1.5,
+                                delay: 1.0,
                                 ease: "easeOut"
                             }}
                         />
