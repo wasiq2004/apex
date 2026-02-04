@@ -68,7 +68,7 @@ const About: React.FC = () => {
           >
             <div className="absolute -inset-24 bg-[#D4AF37]/5 rounded-full blur-[120px] -z-10"></div>
             <div className="relative rounded-sm overflow-hidden border border-white/5 shadow-2xl">
-              <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1600" className="grayscale opacity-40 object-cover w-full aspect-[4/5]" alt="Apex Skills Leadership" />
+              <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1600" className="object-cover w-full aspect-[4/5]" alt="Apex Skills Leadership" />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
             </div>
             <Reveal delay={0.8} y={30}>

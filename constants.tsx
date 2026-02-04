@@ -4,28 +4,40 @@ export { Category };
 
 export const PARTNERS = [
   {
-    name: "Google",
-    logo: "/assest/google-icon-logo-svgrepo-com.svg",
+    name: "Autodesk",
+    logo: "/assest/Autodesk.png",
+  },
+  {
+    name: "Centriport",
+    logo: "/assest/centriport.png",
+  },
+  {
+    name: "Cisco ",
+    logo: "/assest/cisco (1).png",
+  },
+  {
+    name: "ESB",
+    logo: "/assest/ESP.png",
+  },
+  {
+    name: "IC3",
+    logo: "/assest/IC3.png",
   },
   {
     name: "Microsoft",
-    logo: "/assest/microsoft-svgrepo-com.svg",
+    logo: "/assest/Microsoft.png",
   },
   {
-    name: "Meta",
-    logo: "/assest/microsoft-svgrepo-com.svg",
+    name: "project Management Institute",
+    logo: "/assest/projectManagement Instuite.png",
   },
   {
-    name: "Razorpay",
-    logo: "/assest/google-icon-logo-svgrepo-com.svg",
+    name: "Swift",
+    logo: "/assest/Swift.png",
   },
   {
-    name: "IBM",
-    logo: "/assest/microsoft-svgrepo-com.svg",
-  },
-  {
-    name: "Adobe",
-    logo: "/assest/google-icon-logo-svgrepo-com.svg",
+    name: "Technology",
+    logo: "/assest/technology.png",
   },
 ];
 

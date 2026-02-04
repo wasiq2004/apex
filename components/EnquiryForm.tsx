@@ -90,9 +90,9 @@ const EnquiryForm: React.FC = () => {
     <div className="w-full bg-zinc-900/20 backdrop-blur-3xl p-8 lg:p-16 rounded-sm border border-white/5 shadow-2xl">
       <div className="mb-12 text-left space-y-4 border-l-2 border-[#D4AF37] pl-8">
         <h3 className="text-3xl lg:text-4xl font-black text-white tracking-tighter uppercase leading-none">
-          Inquiry <span className="text-gold">Vault</span>
+          Reach Us <span className="text-gold">Out</span>
         </h3>
-        <p className="text-zinc-500 font-medium text-[10px] tracking-[0.4em] uppercase">Professional Intake Protocol</p>
+        <p className="text-zinc-500 font-medium text-[10px] tracking-[0.4em] uppercase">let us know</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
@@ -183,7 +183,7 @@ const EnquiryForm: React.FC = () => {
               <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-black"></div>
             ) : (
               <>
-                <span>INITIATE PROTOCOL</span>
+                <span>SEND MESSAGE</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
               </>
             )}

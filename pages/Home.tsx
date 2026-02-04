@@ -48,7 +48,7 @@ const PartnerLogo = ({ name, logo }: PartnerLogoProps) => {
         <img
           src={logo}
           alt={name}
-          className="max-h-8 object-contain opacity-80 group-hover:opacity-100 transition-all duration-500"
+          className="max-h-8 object-contain opacity-100 group-hover:opacity-100 transition-all duration-500"
         />
       </div>
     </div>
@@ -118,7 +118,7 @@ const MentorshipCarousel = () => {
             <div className="lg:w-1/2 relative min-h-[350px]">
               <img
                 src={MENTORSHIP_SLIDES[active].image}
-                className="absolute inset-0 w-full h-full object-cover grayscale opacity-30 brightness-50"
+                className="absolute inset-0 w-full h-full object-cover "
                 alt={MENTORSHIP_SLIDES[active].title}
               />
               <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-900/20 to-transparent"></div>
@@ -424,8 +424,8 @@ const Home: React.FC = () => {
                       <Phone className="text-[#D4AF37]" size={24} />
                     </div>
                     <div>
-                      <p className="text-[10px] font-black text-zinc-500 tracking-[0.4em] uppercase mb-1">Inquiry Support</p>
-                      <p className="text-xl font-black text-white tracking-tight">+91 80882 79615</p>
+                      <p className="text-[10px] font-black text-zinc-500 tracking-[0.4em] uppercase mb-1">Reach Us Out</p>
+                      <p className="text-xl font-black text-white tracking-tight">+91- 8073625691</p>
                     </div>
                   </div>
                 </Reveal>

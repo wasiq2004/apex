@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Shield } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,52 +34,84 @@ const Header: React.FC = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${scrolled ? 'bg-black/90 backdrop-blur-2xl border-b border-white/5 py-4' : 'bg-transparent py-8'}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
+        scrolled
+          ? 'bg-black/90 backdrop-blur-2xl border-b border-white/5 py-4'
+          : 'bg-transparent py-8'
+      }`}
     >
       <div className="max-w-screen-2xl mx-auto px-6 lg:px-12">
         <div className="flex justify-between items-center">
+          {/* LOGO */}
           <Link to="/" className="flex items-center">
-            {/* Logo Image - Bigger, no text */}
             <motion.div
               className="relative group"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              whileHover={{ scale: 1.08 }}
+              transition={{ type: "spring", stiffness: 350, damping: 12 }}
             >
-              <div className="absolute inset-0 bg-[#D4AF37]/10 blur-md rounded-lg group-hover:bg-[#D4AF37]/30 transition-all"></div>
+              <div className="absolute inset-0 bg-[#D4AF37]/10 blur-md rounded-lg group-hover:bg-[#D4AF37]/30 transition-all" />
               <img
                 src="/Logobgblack-removebg-preview.png"
                 alt="Apex Skill Technologies"
-                className="w-16 h-16 object-contain relative z-10 drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]"
+                className="
+                  w-20 h-20 
+                  md:w-24 md:h-24 
+                  object-contain relative z-10
+                  drop-shadow-[0_0_12px_rgba(212,175,55,0.35)]
+                "
               />
             </motion.div>
           </Link>
 
-          <nav className="hidden xl:flex items-center space-x-10">
+          {/* DESKTOP NAV */}
+          <nav className="hidden xl:flex items-center space-x-12">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 to={item.path}
-                className={`text-[10px] font-black tracking-[0.2em] transition-all hover:text-[#D4AF37] ${location.pathname === item.path ? 'text-[#D4AF37]' : 'text-white/80'}`}
+                className={`
+                  text-[12px] font-black tracking-[0.25em]
+                  transition-all duration-300
+                  hover:text-[#D4AF37]
+                  ${
+                    location.pathname === item.path
+                      ? 'text-[#D4AF37]'
+                      : 'text-white/80'
+                  }
+                `}
               >
                 {item.name}
               </Link>
             ))}
+
             <button
               onClick={handleLMSClick}
-              className="px-7 py-3 rounded-sm border border-[#D4AF37]/30 text-[#D4AF37] text-[10px] font-black tracking-[0.2em] hover:bg-gold-metallic hover:text-black transition-all"
+              className="
+                px-8 py-3 rounded-sm
+                border border-[#D4AF37]/30
+                text-[#D4AF37]
+                text-[12px] font-black tracking-[0.25em]
+                hover:bg-[#D4AF37] hover:text-black
+                transition-all duration-300
+              "
             >
               LMS LOGIN
             </button>
           </nav>
 
+          {/* MOBILE MENU ICON */}
           <div className="xl:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-[#D4AF37]">
-              {isOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-2 text-[#D4AF37]"
+            >
+              {isOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
             </button>
           </div>
         </div>
       </div>
 
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -90,11 +122,27 @@ const Header: React.FC = () => {
           >
             <div className="px-6 py-10 space-y-6">
               {navItems.map((item) => (
-                <Link key={item.name} to={item.path} className="block text-xs font-black text-white/80 hover:text-[#D4AF37] tracking-widest uppercase">
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className="
+                    block text-sm font-black
+                    text-white/80 hover:text-[#D4AF37]
+                    tracking-[0.3em] uppercase
+                  "
+                >
                   {item.name}
                 </Link>
               ))}
-              <button onClick={handleLMSClick} className="w-full text-left text-xs font-black text-[#D4AF37] tracking-widest uppercase">
+              <button
+                onClick={handleLMSClick}
+                className="
+                  w-full text-left
+                  text-sm font-black
+                  text-[#D4AF37]
+                  tracking-[0.3em] uppercase
+                "
+              >
                 LMS LOGIN (COMING SOON)
               </button>
             </div>
