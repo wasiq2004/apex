@@ -10,15 +10,13 @@ const AnimatedLogoReveal: React.FC = () => {
             // Initial delay
             await new Promise(resolve => setTimeout(resolve, 500));
 
-            // Start the reveal animation
+            // Start the reveal animation - fade in with subtle scale
             await controls.start({
-                scale: [0.5, 1.2, 1],
-                rotate: [0, 360, 360],
-                opacity: [0, 1, 1],
+                scale: [0.95, 1],
+                opacity: [0, 1],
                 transition: {
-                    duration: 2,
-                    ease: [0.43, 0.13, 0.23, 0.96],
-                    times: [0, 0.6, 1]
+                    duration: 1.5,
+                    ease: [0.43, 0.13, 0.23, 0.96]
                 }
             });
 
@@ -29,7 +27,7 @@ const AnimatedLogoReveal: React.FC = () => {
     }, [controls]);
 
     return (
-        <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden py-20">
+        <div className="relative w-full h-screen flex items-center justify-center overflow-hidden">
             {/* Animated background particles */}
             <div className="absolute inset-0">
                 {[...Array(20)].map((_, i) => (
@@ -61,7 +59,7 @@ const AnimatedLogoReveal: React.FC = () => {
             {/* Main logo container - Centered */}
             <motion.div
                 animate={controls}
-                className="relative z-10 flex flex-col items-center justify-center"
+                className="relative z-10 flex flex-col items-center justify-center max-w-7xl mx-auto px-4"
             >
                 {/* Glow effect behind logo */}
                 <motion.div
@@ -133,7 +131,7 @@ const AnimatedLogoReveal: React.FC = () => {
 
                 {/* Tagline and scroll indicator - centered below logo */}
                 <motion.div
-                    className="text-center mt-6 space-y-6 w-full flex flex-col items-center"
+                    className="text-center mt-12 space-y-6 w-full flex flex-col items-center"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{
                         opacity: isRevealed ? 1 : 0,
