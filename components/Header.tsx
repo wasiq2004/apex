@@ -35,8 +35,8 @@ const Header: React.FC = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${scrolled
-        ? 'bg-black/90 backdrop-blur-2xl border-b border-white/5 py-4'
-        : 'bg-transparent py-8'
+        ? 'bg-black/90 backdrop-blur-2xl border-b border-white/5 py-2'
+        : 'bg-transparent py-2'
         }`}
     >
       <div className="max-w-screen-2xl mx-auto px-6 lg:px-12">
@@ -52,10 +52,10 @@ const Header: React.FC = () => {
                 src="/Logobgblack-removebg-preview.png"
                 alt="Apex Skill Technologies"
                 className="
-                  w-28 h-28
-                  md:w-32 md:h-32
+                  w-20 h-20
+                  md:w-25 md:h-25
                   object-contain
-                  relative z-10
+                  relative z-200
                   transition-transform
                 "
               />
