@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Shield, ChevronRight, Award, Zap, Globe, Phone, Mail, ChevronLeft, Briefcase, Cpu, Code, Database, BarChart, Server, Clock, FileCheck, Users, Target, Rocket, GraduationCap } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { PARTNERS, COURSES, Category, TESTIMONIALS } from '../constants';
+import { PARTNERS, TESTIMONIALS } from '../constants';
 import EnquiryForm from '../components/EnquiryForm';
 import AnimatedLogoReveal from '../components/AnimatedLogoReveal';
 
@@ -20,22 +20,7 @@ const Reveal = ({ children, delay = 0, y = 30, className }: { children?: React.R
   </motion.div>
 );
 
-// const PartnerLogo = ({ name }: { name: string }) => {
-//   const icons = [<Cpu size={14} />, <Code size={14} />, <Database size={14} />, <BarChart size={14} />, <Server size={14} />, <Briefcase size={14} />];
-//   const charCodeSum = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-//   const icon = icons[charCodeSum % icons.length];
 
-//   return (
-//     <div className="flex items-center space-x-4 mx-16 group cursor-default">
-//       <div className="w-10 h-10 bg-zinc-900 border border-white/5 rounded-sm flex items-center justify-center text-[#D4AF37]/40 group-hover:text-[#D4AF37] group-hover:border-[#D4AF37]/30 transition-all duration-500">
-//         {icon}
-//       </div>
-//       <span className="text-xs font-bold text-zinc-500 tracking-[0.4em] uppercase group-hover:text-white transition-all duration-500 whitespace-nowrap">
-//         {name}
-//       </span>
-//     </div>
-//   );
-// };
 type PartnerLogoProps = {
   name: string;
   logo: string;
@@ -43,8 +28,8 @@ type PartnerLogoProps = {
 
 const PartnerLogo = ({ name, logo }: PartnerLogoProps) => {
   return (
-    <div className="mx-16 flex items-center justify-center group cursor-default">
-      <div className="w-28 h-14 flex items-center justify-center bg-zinc-900 border border-white/5 rounded-sm group-hover:border-[#D4AF37]/30 transition-all duration-500">
+    <div className="mx-8 md:mx-16 flex items-center justify-center group cursor-default">
+      <div className="w-32 h-30 md:w-40 md:h-20 flex items-center justify-center bg-black/90 border border-white/5 rounded-sm group-hover:border-[#D4AF37]/30 transition-all duration-500">
         <img
           src={logo}
           alt={name}
@@ -139,8 +124,17 @@ const MentorshipCarousel = () => {
 };
 
 const Home: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<Category>(Category.ComputerScience);
-  const filteredCourses = COURSES.filter(c => c.category === activeCategory);
+  const [bestSellingCourses, setBestSellingCourses] = useState<any[]>([]);
+
+  useEffect(() => {
+    const API_URL = 'http://localhost:5000';
+    fetch(`${API_URL}/api/courses/best-selling`)
+      .then(res => res.json())
+      .then(data => {
+        setBestSellingCourses(data.data || []);
+      })
+      .catch(err => console.error('Failed to load best selling courses', err));
+  }, []);
 
   const heroRef = useRef(null);
   const { scrollYProgress: heroProgress } = useScroll({
@@ -157,70 +151,9 @@ const Home: React.FC = () => {
       {/* Animated Logo Reveal - First thing users see */}
       <AnimatedLogoReveal />
 
-      {/* Hero Section */}
-      {/* <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(212,175,55,0.06),transparent_80%)]"></div>
-          <div className="absolute inset-0 bg-black/40"></div>
-          <motion.div
-            initial={{ opacity: 0, rotate: -10, scaleX: 0 }}
-            animate={{ opacity: 0.6, scaleX: 1 }}
-            transition={{ duration: 2.5, delay: 0.5, ease: "easeOut" }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180%] h-[1px] gold-streak z-10"
-          ></motion.div>
-        </div>
-
-        <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="relative z-20 text-center max-w-[90rem] w-full px-6 pt-32 lg:pt-40">
-          <Reveal delay={0.2} y={40}>
-            <div className="flex flex-col items-center justify-center space-y-8">
-              <div className="relative group cursor-pointer">
-                <div className="w-48 h-48 lg:w-60 lg:h-60 border border-[#D4AF37]/20 rounded-sm flex items-center justify-center relative overflow-hidden bg-black/60 backdrop-blur-xl transition-all duration-700 group-hover:border-[#D4AF37]/50 shadow-2xl">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/10 to-transparent"></div>
-                  <Shield className="w-32 h-32 text-[#D4AF37] animate-gold-float opacity-70" strokeWidth={0.2} />
-                  <div className="absolute top-0 right-0 p-3 text-[8px] font-black text-[#D4AF37]/30 tracking-[0.3em] uppercase">Est 2024</div>
-                </div>
-                <div className="absolute -inset-10 bg-[#D4AF37]/5 rounded-full blur-[80px] -z-10"></div>
-              </div>
-              <div className="space-y-4">
-                <h1 className="text-6xl lg:text-8xl font-black text-white tracking-[-0.05em] leading-none uppercase">
-                  APEX<span className="text-gold">SKILL</span>
-                </h1>
-                <p className="text-xs lg:text-lg font-bold text-[#D4AF37] tracking-[0.8em] uppercase opacity-50">
-                  Skill Technologies
-                </p>
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.6} y={20}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mt-16">
-              <Link to="/programs" className="group relative px-12 py-4 bg-gold-metallic rounded-sm overflow-hidden shadow-gold-glow transition-all">
-                <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                <span className="relative z-10 text-black text-xs font-black tracking-[0.3em] uppercase">Browse Courses</span>
-              </Link>
-              <Link to="/contact" className="px-12 py-4 bg-transparent border border-[#D4AF37]/30 rounded-sm text-white text-xs font-black tracking-[0.3em] hover:bg-white hover:text-black transition-all uppercase">
-                Contact Protocol
-              </Link>
-            </div>
-          </Reveal>
-        </motion.div>
-      </section> */}
-
-      {/* Partner Marquee Section
-      <section className="py-24 bg-black/60 border-y border-white/5 relative z-10 overflow-hidden">
-        <div className="relative flex overflow-x-hidden opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-1000">
-          <div className="animate-marquee py-4 flex items-center">
-            {[...PARTNERS, ...PARTNERS].map((partner: string, i: number) => (
-              <React.Fragment key={`${partner}-${i}`}>
-                <PartnerLogo name={partner} />
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-      </section> */}
       {/* Partner Marquee Section */}
-      <section className="py-24 bg-black/60 border-y border-white/5 relative z-10 overflow-hidden">
-        <div className="relative flex overflow-x-hidden opacity-60 hover:opacity-100 transition-all duration-1000">
+      <section className="py-16 bg-black/60 border-y border-white/5 relative z-10 overflow-hidden">
+        <div className="relative flex overflow-x-hidden ">
           <div className="animate-marquee py-4 flex items-center">
             {[...PARTNERS, ...PARTNERS].map((partner, i) => (
               <React.Fragment key={`${partner.name}-${i}`}>
@@ -235,7 +168,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Advantage Section */}
-      <section className="py-40 bg-[#050505]">
+      <section className="py-16 lg:py-24 bg-[#050505]">
         <div className="max-w-screen-2xl mx-auto px-6 lg:px-12">
           <Reveal delay={0.1}>
             <div className="text-center mb-24 space-y-4">
@@ -251,7 +184,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Internship Programs Section */}
-      <section className="py-40 bg-black border-y border-white/5 relative overflow-hidden">
+      <section className="py-16 lg:py-24 bg-black border-y border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#D4AF37]/5 rounded-full blur-[150px] opacity-40 -z-10"></div>
         <div className="max-w-screen-2xl mx-auto px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-24 items-center">
@@ -303,7 +236,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Career & Placement Support Section */}
-      <section className="py-40 bg-[#050505]">
+      <section className="py-16 lg:py-24 bg-[#050505]">
         <div className="max-w-screen-2xl mx-auto px-6 lg:px-12 text-center mb-24">
           <Reveal delay={0.1}>
             <div className="space-y-4">
@@ -341,7 +274,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Course Grid */}
-      <section id="courses" className="py-40 bg-black border-y border-white/5">
+      <section id="courses" className="py-16 lg:py-24 bg-black border-y border-white/5">
         <div className="max-w-screen-2xl mx-auto px-6 lg:px-12">
           <div className="flex flex-col xl:flex-row xl:items-end justify-between mb-24 gap-10">
             <Reveal delay={0.1}>
@@ -358,7 +291,7 @@ const Home: React.FC = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {filteredCourses.slice(0, 3).map((course, idx) => (
+            {bestSellingCourses.map((course, idx) => (
               <Reveal key={course.id} delay={idx * 0.1}>
                 <div className="group bg-zinc-900/40 border border-white/5 rounded-sm p-12 hover:border-[#D4AF37]/30 transition-all duration-700 flex flex-col h-full relative overflow-hidden">
                   <div className="space-y-10 flex-grow">
@@ -367,7 +300,7 @@ const Home: React.FC = () => {
                       <span className="opacity-50 uppercase">{course.duration}</span>
                     </div>
                     <h3 className="text-2xl font-black text-white leading-tight uppercase tracking-tight">{course.title}</h3>
-                    <p className="text-base text-zinc-500 font-medium leading-relaxed">{course.description}</p>
+                    <p className="text-base text-zinc-500 font-medium leading-relaxed">{course.short_description}</p>
                   </div>
                   <div className="mt-12 pt-8 border-t border-white/5 flex items-center justify-between">
                     <div className="flex flex-col">
@@ -386,7 +319,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-40 bg-[#050505]">
+      <section className="py-16 lg:py-24 bg-[#050505]">
         <div className="max-w-screen-2xl mx-auto px-6 lg:px-12 text-center">
           <Reveal delay={0.1}>
             <h2 className="text-4xl lg:text-6xl font-black text-white tracking-tighter uppercase mb-20">Student <span className="text-gold">Testimonials</span></h2>
@@ -405,7 +338,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Enquiry Section */}
-      <section id="enquiry" className="py-40 bg-[#050505] relative border-t border-white/5">
+      <section id="enquiry" className="py-16 lg:py-24 bg-[#050505] relative border-t border-white/5">
         <div className="max-w-screen-2xl mx-auto px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-24 items-center">
             <div className="space-y-16">

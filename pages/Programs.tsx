@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Star, Filter, ChevronRight } from 'lucide-react';
+import { Star, ChevronRight, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { COURSES, Category } from '../constants';
+import { Course } from '../types';
+
+const API_URL = 'http://localhost:5000';
 
 const Reveal = ({ children, delay = 0, y = 30 }: { children?: React.ReactNode, delay?: number, y?: number, key?: React.Key }) => (
   <motion.div
@@ -16,11 +18,35 @@ const Reveal = ({ children, delay = 0, y = 30 }: { children?: React.ReactNode, d
 );
 
 const Programs: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<Category | 'All'>('All');
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const filteredCourses = selectedCategory === 'All'
-    ? COURSES
-    : COURSES.filter(c => c.category === selectedCategory);
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    setIsLoading(true);
+    setError('');
+    try {
+      const response = await fetch(`${API_URL}/api/courses`);
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch courses');
+      }
+
+      const data = await response.json();
+      setCourses(data.data || []);
+    } catch (error: any) {
+      console.error('Failed to fetch courses:', error);
+      setError(error.message || 'Failed to load courses');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
 
   return (
     <div className="pt-44 pb-32 overflow-hidden min-h-screen">
@@ -42,69 +68,86 @@ const Programs: React.FC = () => {
           </Reveal>
         </div>
 
-        <Reveal delay={0.4}>
-          <div className="mb-16 flex flex-col lg:flex-row lg:items-center justify-between space-y-8 lg:space-y-0 border-b border-white/5 pb-12">
-            <div className="flex flex-wrap gap-4">
-              <button
-                onClick={() => setSelectedCategory('All')}
-                className={`px-10 py-3 rounded-sm text-[10px] font-black tracking-[0.3em] transition-all uppercase ${selectedCategory === 'All' ? 'bg-[#D4AF37] text-black shadow-gold-glow' : 'bg-white/5 text-zinc-500 hover:bg-white/10 border border-white/5'}`}
-              >
-                All Courses
-              </button>
-              {Object.values(Category).map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-10 py-3 rounded-sm text-[10px] font-black tracking-[0.3em] transition-all uppercase ${selectedCategory === cat ? 'bg-[#D4AF37] text-black shadow-gold-glow' : 'bg-white/5 text-zinc-500 hover:bg-white/10 border border-white/5'}`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-            <div className="flex items-center space-x-3 text-[10px] font-black text-zinc-600 tracking-[0.2em] uppercase">
-              <Filter size={14} />
-              <span>{filteredCourses.length} ACTIVE TRACKS</span>
-            </div>
+
+
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex flex-col items-center justify-center py-32">
+            <Loader2 className="w-12 h-12 text-[#D4AF37] animate-spin mb-4" />
+            <p className="text-white/60 font-medium">Loading courses...</p>
           </div>
-        </Reveal>
+        )}
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-10 mb-40">
-          {filteredCourses.map((course, idx) => (
-            <Reveal key={course.id} delay={0.1 + (idx % 4) * 0.1}>
-              <div className="group h-full bg-zinc-900/30 border border-white/5 rounded-sm p-8 hover:border-[#D4AF37]/40 transition-all duration-700 flex flex-col shadow-xl relative overflow-hidden">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-sm mb-10 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 shadow-lg border border-white/5">
-                  <img src={`https://picsum.photos/seed/p${course.id}/800/600`} alt={course.title} className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-1000" />
-                  {course.isBestSeller && (
-                    <span className="absolute top-4 right-4 bg-[#D4AF37] text-black text-[9px] font-black uppercase px-3 py-1.5 rounded-sm shadow-xl">Elite Priority</span>
-                  )}
-                </div>
+        {/* Error State */}
+        {error && !isLoading && (
+          <div className="bg-red-900/20 border border-red-500/30 p-8 rounded-lg text-center">
+            <p className="text-red-400 font-medium mb-4">{error}</p>
+            <button
+              onClick={fetchCourses}
+              className="px-6 py-3 bg-[#D4AF37] text-black font-black text-sm tracking-wider uppercase rounded-sm hover:scale-105 transition-all"
+            >
+              Try Again
+            </button>
+          </div>
+        )}
 
-                <div className="flex flex-col flex-grow">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-2">
-                      <Star className="text-[#D4AF37] w-4 h-4 fill-current" />
-                      <span className="text-xs font-black text-white">{course.rating}</span>
-                    </div>
-                    <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">{course.enrollments} ENROLLED</span>
-                  </div>
-                  <h3 className="text-2xl font-black text-white mb-5 uppercase leading-tight group-hover:text-[#D4AF37] transition-colors tracking-tight">{course.title}</h3>
-                  <p className="text-base text-zinc-500 mb-10 font-medium line-clamp-3 leading-relaxed">{course.description}</p>
-                  
-                  <div className="mt-auto space-y-6 pt-6 border-t border-white/5">
-                    <div className="flex items-center justify-between text-[9px] font-black text-zinc-600 uppercase tracking-widest">
-                      <span className="bg-white/5 px-2 py-0.5 rounded-sm">{course.modules} Modules</span>
-                      <span>{course.duration}</span>
-                    </div>
-                    <Link to="/contact" className="flex items-center justify-between w-full py-4 px-8 bg-zinc-900/60 text-white border border-white/10 rounded-sm font-black text-[10px] tracking-[0.3em] uppercase hover:bg-gold-metallic hover:text-black hover:border-transparent transition-all shadow-lg group/btn">
-                      <span>Apply Protocol</span>
-                      <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
-                </div>
+        {/* Courses Grid */}
+        {!isLoading && !error && (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-10 mb-40">
+            {courses.length === 0 ? (
+              <div className="col-span-full text-center py-20">
+                <p className="text-white/60 font-medium text-lg">No courses available.</p>
               </div>
-            </Reveal>
-          ))}
-        </div>
+            ) : (
+              courses.map((course, idx) => (
+                <Reveal key={course.id} delay={0.1 + (idx % 4) * 0.1}>
+                  <div className="group h-full bg-zinc-900/30 border border-white/5 rounded-sm p-8 hover:border-[#D4AF37]/40 transition-all duration-700 flex flex-col shadow-xl relative overflow-hidden">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-sm mb-10 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 shadow-lg border border-white/5">
+                      <img
+                        src={course.thumbnail || `https://picsum.photos/seed/c${course.id}/800/600`}
+                        alt={course.title}
+                        className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-1000"
+                      />
+                      {course.is_best_seller && (
+                        <span className="absolute top-4 right-4 bg-[#D4AF37] text-black text-[9px] font-black uppercase px-3 py-1.5 rounded-sm shadow-xl">Elite Priority</span>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col flex-grow">
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center space-x-2">
+                          <Star className="text-[#D4AF37] w-4 h-4 fill-current" />
+                          <span className="text-xs font-black text-white">{Number(course.rating || 0).toFixed(1)}</span>
+                        </div>
+                        <span className="text-[12px] font-bold text-white uppercase tracking-widest">{course.enrollments} ENROLLED</span>
+                      </div>
+                      <h3 className="text-2xl font-black text-white mb-5 uppercase leading-tight group-hover:text-[#D4AF37] transition-colors tracking-tight">{course.title}</h3>
+                      <p className="text-base text-zinc-500 mb-10 font-medium line-clamp-3 leading-relaxed">{course.short_description}</p>
+
+                      <div className="mt-auto space-y-6 pt-6 border-t border-white/5">
+                        <div className="flex items-center justify-between text-[15px] font-black text-white uppercase tracking-widest">
+                          <span className="bg-white/5 px-2 py-0.5 rounded-sm">{course.modules} Modules</span>
+                          <span>{course.duration}</span>
+                        </div>
+                        {/* <div className="flex items-center justify-between text-[9px] font-black text-zinc-600 uppercase tracking-widest">
+                          <span className="bg-white/5 px-2 py-0.5 rounded-sm">{course.mode}</span>
+                          {course.price && <span className="text-[#D4AF37]">₹{Number(course.price).toFixed(0)}</span>}
+                        </div> */}
+                        <Link
+                          to={`/courses/${course.slug}`}
+                          className="flex items-center justify-between w-full py-4 px-8 bg-zinc-900/60 text-white border border-white/10 rounded-sm font-black text-[10px] tracking-[0.3em] uppercase hover:bg-gold-metallic hover:text-black hover:border-transparent transition-all shadow-lg group/btn"
+                        >
+                          <span>View Details</span>
+                          <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </Reveal>
+              ))
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -41,72 +41,7 @@ export const PARTNERS = [
   },
 ];
 
-export const COURSES: Course[] = [
-  {
-    id: '1',
-    title: 'Full Stack Web Development',
-    category: Category.ComputerScience,
-    description: 'Master frontend and backend technologies to build scalable enterprise-grade web applications.',
-    rating: 4.9,
-    enrollments: '15K+',
-    modules: 12,
-    duration: '1-3 Months',
-    isBestSeller: true
-  },
-  {
-    id: '2',
-    title: 'Python Programming & Automation',
-    category: Category.ComputerScience,
-    description: 'Learn Python for scripting, automation, and core development with hands-on project exposure.',
-    rating: 4.8,
-    enrollments: '12K+',
-    modules: 10,
-    duration: '2 Months',
-    isBestSeller: true
-  },
-  {
-    id: '3',
-    title: 'Data Science & Analytics',
-    category: Category.ComputerScience,
-    description: 'Transform raw data into strategic assets. Learn predictive modeling and ethical AI at scale.',
-    rating: 4.7,
-    enrollments: '20K+',
-    modules: 11,
-    duration: '3 Months',
-    isBestSeller: true
-  },
-  {
-    id: '4',
-    title: 'AI & Machine Learning',
-    category: Category.ComputerScience,
-    description: 'Master the next frontier of intelligence. Built for architects looking to dominate the AI landscape.',
-    rating: 4.9,
-    enrollments: '35K+',
-    modules: 14,
-    duration: '3 Months',
-    isBestSeller: true
-  },
-  {
-    id: '5',
-    title: 'Digital Marketing & Growth',
-    category: Category.Management,
-    description: 'Strategies for growth, SEO, SEM, and performance marketing in a digital-first economy.',
-    rating: 4.6,
-    enrollments: '8K+',
-    modules: 8,
-    duration: '2 Months'
-  },
-  {
-    id: '6',
-    title: 'HR Fundamentals',
-    category: Category.Management,
-    description: 'Understand modern workplace dynamics, talent acquisition, and professional management protocol.',
-    rating: 4.8,
-    enrollments: '5K+',
-    modules: 12,
-    duration: '2 Months'
-  }
-];
+
 
 // Added MENTORS constant to resolve export error
 export const MENTORS: Mentor[] = [

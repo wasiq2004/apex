@@ -11,21 +11,21 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-16 pb-16 border-b border-white/5">
 
           {/* BRAND */}
-          <div className="space-y-6">
+          <div className="space-y-1">
             <Link to="/" className="inline-flex group">
               <img
                 src="/Logobgblack-removebg-preview.png"
                 alt="Apex Skill Technologies"
-                className="w-16 h-16 object-contain transition-transform group-hover:scale-110 drop-shadow-[0_0_12px_rgba(212,175,55,0.35)]"
+                className="scale-70 object-contain transition-transform group-hover:scale-110"
               />
             </Link>
-            <p className="text-[11px] tracking-widest leading-relaxed uppercase text-white/70 max-w-sm">
-              Skill Development · Internships · Career Enablement.  
+            {/* <p className="text-[11px] tracking-widest leading-relaxed uppercase text-white/70 max-w-sm">
+              Skill Development · Internships · Career Enablement.
               Bridging the gap between academic education and modern industry needs.
-            </p>
+            </p> */}
           </div>
 
-          {/* COURSES */}
+          {/* COURSES
           <div>
             <h4 className="text-xs font-black tracking-[0.35em] uppercase mb-6 text-[#D4AF37]">
               Courses
@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
               <li><Link to="/courses/cloud-computing" className="hover:text-[#D4AF37] transition-all">Cloud Computing</Link></li>
               <li><Link to="/courses/digital-marketing" className="hover:text-[#D4AF37] transition-all">Digital Marketing</Link></li>
             </ul>
-          </div>
+          </div> */}
 
           {/* QUICK LINKS */}
           <div>
@@ -49,6 +49,7 @@ const Footer: React.FC = () => {
               <li><Link to="/programs" className="hover:text-[#D4AF37] transition-all">Programs</Link></li>
               <li><Link to="/careers" className="hover:text-[#D4AF37] transition-all">Careers</Link></li>
               <li><Link to="/contact" className="hover:text-[#D4AF37] transition-all">Contact</Link></li>
+              <li><Link to="/admin" className="hover:text-[#D4AF37] transition-all font-bold">Admin Panel</Link></li>
             </ul>
           </div>
 

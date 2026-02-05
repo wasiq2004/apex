@@ -18,9 +18,22 @@ const Reveal = ({ children, delay = 0, y = 30 }: { children?: React.ReactNode, d
 const Careers: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState('');
+  const [modalType, setModalType] = useState<'internship' | 'mentor' | 'job'>('job');
+  const [selectedInternshipId, setSelectedInternshipId] = useState<number | undefined>(undefined);
+  const [internships, setInternships] = useState<any[]>([]);
 
-  const handleApplyClick = (position: string) => {
+  React.useEffect(() => {
+    const API_URL = 'http://localhost:5000';
+    fetch(`${API_URL}/api/internships`)
+      .then(res => res.json())
+      .then(data => setInternships(data.data || []))
+      .catch(err => console.error('Failed to load internships', err));
+  }, []);
+
+  const handleApplyClick = (position: string, type: 'internship' | 'mentor' | 'job' = 'job', id?: number) => {
     setSelectedPosition(position);
+    setModalType(type);
+    setSelectedInternshipId(id);
     setIsModalOpen(true);
   };
   return (
@@ -61,7 +74,63 @@ const Careers: React.FC = () => {
           ))}
         </div>
 
-        <div className="space-y-16">
+        {/* Mentor Section */}
+        <div className="mb-40 text-center">
+          <Reveal>
+            <div className="bg-gradient-to-r from-zinc-900 to-black border border-[#D4AF37]/20 p-16 rounded-sm relative overflow-hidden">
+              <div className="relative z-10">
+                <h2 className="text-4xl lg:text-5xl font-black text-white uppercase mb-6">Share Your <span className="text-gold">Mastery</span></h2>
+                <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10 font-medium">
+                  Join our elite network of mentors and shape the next generation of architects.
+                </p>
+                <button
+                  onClick={() => handleApplyClick('Mentor Application', 'mentor')}
+                  className="px-12 py-4 bg-[#D4AF37] text-black font-black text-xs tracking-[0.3em] uppercase rounded-sm hover:scale-105 transition-all shadow-gold-glow"
+                >
+                  Apply as Mentor
+                </button>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Internships Section */}
+        {internships.length > 0 && (
+          <div className="mb-40 space-y-16">
+            <Reveal>
+              <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/5 pb-8 gap-8">
+                <div>
+                  <h2 className="text-4xl lg:text-5xl font-black text-white tracking-tighter uppercase leading-none">Student <span className="text-gold">program</span></h2>
+                  <p className="text-lg text-zinc-500 tracking-[0.2em] font-medium uppercase mt-2">Internship Opportunities</p>
+                </div>
+              </div>
+            </Reveal>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {internships.filter(i => i.is_active).map((internship, i) => (
+                <Reveal key={internship.id} delay={i * 0.1}>
+                  <div className="bg-zinc-900/30 border border-white/5 p-8 hover:border-[#D4AF37]/30 transition-all group">
+                    <h3 className="text-2xl font-black text-white uppercase mb-2 group-hover:text-[#D4AF37] transition-colors">{internship.title}</h3>
+                    <div className="flex flex-wrap gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-6">
+                      <span className="flex items-center"><MapPin className="w-3 h-3 mr-2" /> {internship.location}</span>
+                      <span>⏱️ {internship.duration}</span>
+                      <span>💰 {internship.stipend}</span>
+                    </div>
+                    <p className="text-zinc-400 mb-8 text-sm leading-relaxed">{internship.description}</p>
+                    <button
+                      onClick={() => handleApplyClick(internship.title, 'internship', internship.id)}
+                      className="text-[#D4AF37] font-black text-[10px] uppercase tracking-[0.3em] hover:text-white transition-colors flex items-center"
+                    >
+                      Apply Now <ArrowRight className="ml-2 w-4 h-4" />
+                    </button>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* <div className="space-y-16">
           <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/5 pb-12 gap-8">
             <Reveal delay={0.1}>
               <div className="space-y-3">
@@ -98,13 +167,15 @@ const Careers: React.FC = () => {
               </Reveal>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
 
       <CareerApplicationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         position={selectedPosition}
+        type={modalType}
+        internshipId={selectedInternshipId}
       />
     </div>
   );

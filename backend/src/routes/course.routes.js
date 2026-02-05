@@ -7,7 +7,7 @@ const router = express.Router();
 
 /**
  * @route   GET /api/courses
- * @desc    Get all visible courses (public)
+ * @desc    Get all active courses (public)
  * @access  Public
  */
 router.get('/', async (req, res, next) => {
@@ -23,8 +23,25 @@ router.get('/', async (req, res, next) => {
 });
 
 /**
+ * @route   GET /api/courses/best-selling
+ * @desc    Get best-selling courses (max 3, active only)
+ * @access  Public
+ */
+router.get('/best-selling', async (req, res, next) => {
+    try {
+        const courses = await courseService.getBestSellingCourses();
+        res.json({
+            success: true,
+            data: courses
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
  * @route   GET /api/courses/all
- * @desc    Get all courses including hidden (admin only)
+ * @desc    Get all courses including inactive (admin only)
  * @access  Private/Admin
  */
 router.get('/all', authenticateToken, requireAdmin, async (req, res, next) => {
@@ -33,6 +50,48 @@ router.get('/all', authenticateToken, requireAdmin, async (req, res, next) => {
         res.json({
             success: true,
             data: courses
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @route   GET /api/courses/category/:category
+ * @desc    Get courses by category
+ * @access  Public
+ */
+router.get('/category/:category', async (req, res, next) => {
+    try {
+        const courses = await courseService.getCoursesByCategory(req.params.category, false);
+        res.json({
+            success: true,
+            data: courses
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @route   GET /api/courses/slug/:slug
+ * @desc    Get course by slug
+ * @access  Public
+ */
+router.get('/slug/:slug', async (req, res, next) => {
+    try {
+        const course = await courseService.getCourseBySlug(req.params.slug);
+
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                error: 'Course not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            data: course
         });
     } catch (error) {
         next(error);
@@ -125,7 +184,7 @@ router.delete('/:id', authenticateToken, requireAdmin, async (req, res, next) =>
 
 /**
  * @route   PATCH /api/courses/:id/toggle-visibility
- * @desc    Toggle course visibility
+ * @desc    Toggle course visibility (active/inactive)
  * @access  Private/Admin
  */
 router.patch('/:id/toggle-visibility', authenticateToken, requireAdmin, async (req, res, next) => {

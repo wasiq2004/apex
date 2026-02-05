@@ -1,15 +1,25 @@
 
+
 export interface Course {
-  id: string;
+  id: number;
   title: string;
+  slug: string;
+  short_description: string;
+  full_description: string;
+  duration: string;
+  mode: 'Online' | 'Offline' | 'Hybrid';
+  price: number | null;
+  thumbnail: string | null;
   category: string;
-  description: string;
   rating: number;
   enrollments: string;
   modules: number;
-  duration: string;
-  isBestSeller?: boolean;
+  is_best_seller: boolean;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }
+
 
 export interface Mentor {
   id: string;

@@ -7,7 +7,10 @@
     "scripts": {
         "dev": "node --watch src/server.js",
         "start": "node src/server.js",
-        "migrate": "node src/database/migrate.js"
+        "migrate": "node src/database/migrate.js",
+        "seed": "node src/database/seed.js",
+        "create-admin": "node src/database/create-admin.js",
+        "fix-db": "node src/database/add-slug-column.js && node src/database/add-is-active-column.js"
     },
     "keywords": [
         "edtech",

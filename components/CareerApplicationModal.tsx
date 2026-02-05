@@ -8,9 +8,11 @@ interface CareerModalProps {
     isOpen: boolean;
     onClose: () => void;
     position: string;
+    type?: 'internship' | 'mentor' | 'job';
+    internshipId?: number;
 }
 
-const CareerApplicationModal: React.FC<CareerModalProps> = ({ isOpen, onClose, position }) => {
+const CareerApplicationModal: React.FC<CareerModalProps> = ({ isOpen, onClose, position, type = 'job', internshipId }) => {
     const [submitted, setSubmitted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -18,7 +20,6 @@ const CareerApplicationModal: React.FC<CareerModalProps> = ({ isOpen, onClose, p
         fullName: '',
         email: '',
         phone: '',
-        position: position,
         resumeLink: '',
         coverLetter: ''
     });
@@ -37,18 +38,26 @@ const CareerApplicationModal: React.FC<CareerModalProps> = ({ isOpen, onClose, p
         setError(null);
 
         try {
-            // Ensure position is included in the submission
-            const submissionData = {
-                ...formData,
-                position: position // Always use the position prop
-            };
+            let url = `${API_URL}/api/forms/career`;
+            let body: any = { ...formData, position };
 
-            const response = await fetch(`${API_URL}/api/forms/career`, {
+            if (type === 'internship' || type === 'mentor') {
+                url = `${API_URL}/api/applications`;
+                body = {
+                    type,
+                    internshipId,
+                    fullName: formData.fullName,
+                    email: formData.email,
+                    phone: formData.phone,
+                    resumeLink: formData.resumeLink,
+                    message: formData.coverLetter // Mapping coverLetter to message
+                };
+            }
+
+            const response = await fetch(url, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(submissionData)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
             });
 
             if (!response.ok) {
@@ -56,34 +65,22 @@ const CareerApplicationModal: React.FC<CareerModalProps> = ({ isOpen, onClose, p
                 throw new Error(data.error || `Server returned ${response.status}`);
             }
 
-            const data = await response.json();
             setSubmitted(true);
-            // Reset form but keep position
             setFormData({
                 fullName: '',
                 email: '',
                 phone: '',
-                position: position,
                 resumeLink: '',
                 coverLetter: ''
             });
 
-            // Auto-close after 3 seconds
             setTimeout(() => {
                 onClose();
                 setSubmitted(false);
             }, 3000);
         } catch (err: any) {
-            console.error('Career application error:', err);
-
-            // Provide specific error messages
-            if (err.message === 'Failed to fetch') {
-                setError('Cannot connect to server. Please ensure the backend is running at ' + API_URL);
-            } else if (err.name === 'TypeError') {
-                setError('Network error. Please check your internet connection and try again.');
-            } else {
-                setError(err.message || 'An unexpected error occurred. Please try again.');
-            }
+            console.error('Application error:', err);
+            setError(err.message || 'An unexpected error occurred.');
         } finally {
             setIsLoading(false);
         }

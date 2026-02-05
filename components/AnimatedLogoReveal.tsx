@@ -42,14 +42,14 @@ const AnimatedLogoReveal: React.FC = () => {
                     <filter id="liquidReveal">
                         <feTurbulence
                             type="fractalNoise"
-                            baseFrequency="0.05"
-                            numOctaves="2"
-                            seed="9"
+                            baseFrequency="0"
+                            numOctaves="0"
+                            seed="0"
                         >
                             <animate
                                 attributeName="baseFrequency"
                                 dur="1.3s"
-                                values="0.08;0.015"
+                                values="0;0"
                                 fill="freeze"
                             />
                         </feTurbulence>
@@ -82,7 +82,7 @@ const AnimatedLogoReveal: React.FC = () => {
             <div className="relative z-10 flex flex-col items-center">
                 {/* LOGO */}
                 <motion.img
-                    src="/Logobgblack-removebg-preview.png"
+                    src="/Logobgblack-removebg-preview(copy).png"
                     alt="Logo"
                     className="w-80 h-80 md:w-[600px] md:h-[600px] object-contain"
                     style={{

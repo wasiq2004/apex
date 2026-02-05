@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Programs from './pages/Programs';
+import CourseDetail from './pages/CourseDetail';
 import Mentors from './pages/Mentors';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -15,7 +16,7 @@ import AdminDashboard from './pages/AdminDashboard';
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [pathname]);
   return null;
 };
@@ -53,6 +54,7 @@ const App: React.FC = () => {
                   <Routes>
                     <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
                     <Route path="/programs" element={<PageWrapper><Programs /></PageWrapper>} />
+                    <Route path="/courses/:slug" element={<PageWrapper><CourseDetail /></PageWrapper>} />
                     <Route path="/mentors" element={<PageWrapper><Mentors /></PageWrapper>} />
                     <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
                     <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />

@@ -34,11 +34,10 @@ const Header: React.FC = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
-        scrolled
-          ? 'bg-black/90 backdrop-blur-2xl border-b border-white/5 py-4'
-          : 'bg-transparent py-8'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${scrolled
+        ? 'bg-black/90 backdrop-blur-2xl border-b border-white/5 py-4'
+        : 'bg-transparent py-8'
+        }`}
     >
       <div className="max-w-screen-2xl mx-auto px-6 lg:px-12">
         <div className="flex justify-between items-center">
@@ -49,15 +48,15 @@ const Header: React.FC = () => {
               whileHover={{ scale: 1.08 }}
               transition={{ type: "spring", stiffness: 350, damping: 12 }}
             >
-              <div className="absolute inset-0 bg-[#D4AF37]/10 blur-md rounded-lg group-hover:bg-[#D4AF37]/30 transition-all" />
               <img
                 src="/Logobgblack-removebg-preview.png"
                 alt="Apex Skill Technologies"
                 className="
-                  w-20 h-20 
-                  md:w-24 md:h-24 
-                  object-contain relative z-10
-                  drop-shadow-[0_0_12px_rgba(212,175,55,0.35)]
+                  w-28 h-28
+                  md:w-32 md:h-32
+                  object-contain
+                  relative z-10
+                  transition-transform
                 "
               />
             </motion.div>
@@ -73,10 +72,9 @@ const Header: React.FC = () => {
                   text-[12px] font-black tracking-[0.25em]
                   transition-all duration-300
                   hover:text-[#D4AF37]
-                  ${
-                    location.pathname === item.path
-                      ? 'text-[#D4AF37]'
-                      : 'text-white/80'
+                  ${location.pathname === item.path
+                    ? 'text-[#D4AF37]'
+                    : 'text-white/80'
                   }
                 `}
               >

@@ -67,16 +67,52 @@ export const courseValidation = [
         .trim()
         .notEmpty().withMessage('Title is required')
         .isLength({ min: 3, max: 255 }).withMessage('Title must be between 3 and 255 characters'),
-    body('description')
+    body('slug')
+        .optional()
         .trim()
-        .notEmpty().withMessage('Description is required')
-        .isLength({ min: 10, max: 5000 }).withMessage('Description must be between 10 and 5000 characters'),
+        .matches(/^[a-z0-9-]+$/).withMessage('Slug must contain only lowercase letters, numbers, and hyphens'),
+    body('shortDescription')
+        .trim()
+        .notEmpty().withMessage('Short description is required')
+        .isLength({ min: 10, max: 500 }).withMessage('Short description must be between 10 and 500 characters'),
+    body('fullDescription')
+        .trim()
+        .notEmpty().withMessage('Full description is required')
+        .isLength({ min: 50, max: 10000 }).withMessage('Full description must be between 50 and 10000 characters'),
+    body('duration')
+        .trim()
+        .notEmpty().withMessage('Duration is required')
+        .isLength({ max: 100 }).withMessage('Duration must be less than 100 characters'),
+    body('mode')
+        .optional()
+        .isIn(['Online', 'Offline', 'Hybrid']).withMessage('Mode must be Online, Offline, or Hybrid'),
     body('price')
         .optional()
         .isFloat({ min: 0 }).withMessage('Price must be a positive number'),
-    body('status')
+    body('thumbnail')
         .optional()
-        .isIn(['visible', 'hidden']).withMessage('Status must be either visible or hidden')
+        .trim()
+        .isLength({ max: 500 }).withMessage('Thumbnail URL must be less than 500 characters'),
+    body('category')
+        .trim()
+        .notEmpty().withMessage('Category is required')
+        .isLength({ max: 100 }).withMessage('Category must be less than 100 characters'),
+    body('rating')
+        .optional()
+        .isFloat({ min: 0, max: 5 }).withMessage('Rating must be between 0 and 5'),
+    body('enrollments')
+        .optional()
+        .trim()
+        .isLength({ max: 50 }).withMessage('Enrollments must be less than 50 characters'),
+    body('modules')
+        .optional()
+        .isInt({ min: 0 }).withMessage('Modules must be a positive integer'),
+    body('isBestSeller')
+        .optional()
+        .isBoolean().withMessage('isBestSeller must be a boolean'),
+    body('isActive')
+        .optional()
+        .isBoolean().withMessage('isActive must be a boolean')
 ];
 
 export const loginValidation = [

@@ -13,6 +13,8 @@ import { errorHandler, notFoundHandler } from './middleware/error.middleware.js'
 import authRoutes from './routes/auth.routes.js';
 import courseRoutes from './routes/course.routes.js';
 import formRoutes from './routes/form.routes.js';
+import internshipRoutes from './routes/internship.routes.js';
+import applicationRoutes from './routes/application.routes.js';
 
 const app = express();
 
@@ -21,7 +23,24 @@ app.use(helmet());
 
 // CORS configuration
 app.use(cors({
-    origin: config.frontendUrl,
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+
+        const allowedOrigins = [
+            config.frontendUrl,
+            'http://localhost:3000',
+            'http://localhost:5173',
+            'http://127.0.0.1:3000',
+            'http://127.0.0.1:5173'
+        ];
+
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 
@@ -55,6 +74,8 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/forms', formRoutes);
+app.use('/api/internships', internshipRoutes);
+app.use('/api/applications', applicationRoutes);
 
 // Error handling
 app.use(notFoundHandler);

@@ -3,9 +3,9 @@ dotenv.config();
 
 const config = {
   // Server configuration
-  nodeEnv: process.env.NODE_ENV || 'development',
-  port: 5000, // Hardcoded to port 5000
-  frontendUrl: 'http://localhost:3000', // Hardcoded to port 3000
+  env: process.env.NODE_ENV || 'development',
+  port: parseInt(process.env.PORT || '5000', 10),
+  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
 
   // Database
   database: {
